@@ -1,0 +1,127 @@
+<DeletePopup>:
+    size_hint: None, None
+    size: 300, 300
+    title: "Error"
+    auto_dismiss: False
+
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: "There's nothing to delete. Please select a book."
+            font_size: 0.05 * self.width
+
+        AnchorLayout:
+            Button:
+                text: 'Return'
+                halign: 'center'
+                valign: 'middle'
+                bold: True
+                size_hint: None, None
+                width: self.parent.width / 5
+                height: self.parent.height /8
+                on_release: root.dismiss()
+
+
+<TextInputPopup>:
+    title_text_input: title
+    author_text_input: author
+    genre_text_input: genre
+    size_hint: None, None
+    size: 400, 400
+    title: "Error"
+    auto_dismiss: False
+
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: 'Book Title:'
+                font_size: 20
+            TextInput:
+                id: title
+                multiline: False
+                font_size: self.height - 70
+
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: 'Book Author:'
+                font_size: 20
+            TextInput:
+                id: author
+                multiline: False
+                font_size: self.height - 70
+
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: 'Book Genre:'
+                font_size: 20
+            TextInput:
+                id: genre
+                multiline: False
+                font_size: self.height - 70
+
+        BoxLayout:
+            orientation: 'horizontal'
+            Button:
+                text: 'save book'
+                on_press: root.adding_book()
+                on_release: root.dismiss()
+            Button:
+                text: 'cancel'
+                on_release: root.dismiss()
+
+<SelectableLabel>:
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba:(.0, 0.9, 0.1, 0.3) if self.selected else(0, 0, 0, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+<LibraryRV>:
+    viewclass: 'SelectableLabel'
+    SelectableRecycleBoxLayout:
+        default_size: None, dp(26)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        multiselect: True
+        touch_multiselect: True
+
+<ShelfLayout>:
+    orientation: 'vertical'
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, .2)
+        Button:
+            text: 'delete'
+            on_release: rv.delete_selections()
+        Button:
+            text: 'add book'
+            on_press: root.add_book()
+        Button:
+            text: 'printable'
+            on_release: root.print_books()
+        Button:
+            text: 'By Title'
+            background_color: [0.07, 0.39, 0.4, 1] if not root.order_by_author else [0.82, 0.91, 0.89, 1]
+            on_release:
+                root.order_by_author = False
+                rv.update_data()
+        Button:
+            text: 'By author'
+            background_color: [0.07, 0.39, 0.4, 1] if root.order_by_author else [0.82, 0.91, 0.89, 1]
+            on_release:
+                root.order_by_author = True
+                rv.update_data(root.order_by_author)
+
+    BoxLayout:
+        orientation: 'vertical'
+        id: shelf
+        LibraryRV:
+            id: rv
