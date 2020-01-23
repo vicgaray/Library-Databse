@@ -7,7 +7,7 @@ from kivy.uix.label import Label
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
-from kivy.properties import ObjectProperty, BooleanProperty, ListProperty, DictProperty
+from kivy.properties import ObjectProperty, BooleanProperty, ListProperty
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 
@@ -66,20 +66,8 @@ class TextInputPopup(Popup):
 
     def adding_book(self):
         """Adds the book to the database and the display data in the RecycleView."""
-
-        main_instance = App.get_running_app().root
-        #book_string = self.title_text_input.text + ": " + self.author_text_input.text
-
-        # Creates a format that'll be used for the recycleview.
-        #data_format = {
-            #'data_index': len(main_instance.ids.rv.data),
-            #'title': self.title_text_input.text,
-            #'genre': self.genre_text_input.text,
-            #'text': book_string,
-            #}
-
         self.libr.store_book(self.title_text_input.text, self.author_text_input.text, self.genre_text_input.text) # adds to database
-        main_instance.ids.rv.update_data(main_instance.order_by_author) # adds to recycleview data
+        App.get_running_app().root.ids.rv.update_data(main_instance.order_by_author) # adds to recycleview data
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                                 RecycleBoxLayout):

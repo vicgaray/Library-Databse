@@ -73,6 +73,7 @@
                 text: 'cancel'
                 on_release: root.dismiss()
 
+
 <SelectableLabel>:
     # Draw a background to indicate selection
     canvas.before:
@@ -81,6 +82,8 @@
         Rectangle:
             pos: self.pos
             size: self.size
+
+
 <LibraryRV>:
     viewclass: 'SelectableLabel'
     SelectableRecycleBoxLayout:
@@ -91,6 +94,7 @@
         orientation: 'vertical'
         multiselect: True
         touch_multiselect: True
+
 
 <ShelfLayout>:
     orientation: 'vertical'
